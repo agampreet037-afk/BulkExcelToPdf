@@ -2,6 +2,7 @@
 
 import win32com.client 
 import os
+import time
 
 excel = win32com.client.Dispatch("Excel.Application")
 excel.Visible = False
@@ -79,28 +80,33 @@ def create_all_ws():
        
 
 while True:
-    user_input = input("Enter as per your need\n1. Convert first worksheet\n2. Convert worksheet by number\n3. Convert all worksheets\n")
-    folder_path = input("Enter Path of folder containing Excel Files: ").strip().strip('"')
-    files = os.listdir(folder_path)
+        folder_path = input("Enter Path of folder containing Excel Files: ").strip().strip('"')
+        if not os.path.exists(folder_path):
+            print("Please enter a valid path")
+            time.sleep(2)
+            continue
+        files = os.listdir(folder_path)
+        user_input = input("Enter as per your need\n1. Convert first worksheet\n2. Convert worksheet by number\n3. Convert all worksheets\n")
+        if user_input == "1":
+            create_first_ws()
 
-    if user_input == "1":
-        create_first_ws()
+        elif user_input == "2":
+            create_a_ws()
 
-    elif user_input == "2":
-        create_a_ws()
+        elif user_input == "3":
+            create_all_ws()
+                            
 
-    elif user_input == "3":
-        create_all_ws()
-                          
-
-    else:
-        print("Enter valid input!")
+        else:
+            print("Enter valid input!")
+            time.sleep(2)
+            continue
 
 
-    user_resp = input("Do you want to convert any other files?(y/n): ")
-    if user_resp.lower() != "y":
-        print("Goodbye!")
-        break 
+        user_resp = input("Do you want to convert any other files?(y/n): ")
+        if user_resp.lower() != "y":
+            print("Goodbye!")
+            break 
 
 
 excel.Quit()
